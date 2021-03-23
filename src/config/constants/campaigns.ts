@@ -11,6 +11,18 @@ import { Campaign } from './types'
 
 const campaigns: Campaign[] = [
   {
+    id: '511080000',
+    type: 'ifo',
+    title: 'Belt',
+    badge: 'ifo-belt.svg',
+  },
+  {
+    id: '511070000',
+    type: 'ifo',
+    title: 'Yieldwatch',
+    badge: 'ifo-watch.svg',
+  },
+  {
     id: '511060000',
     type: 'ifo',
     title: 'Berry',

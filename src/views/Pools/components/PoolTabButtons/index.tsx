@@ -14,12 +14,12 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly }) => {
         <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
         <Text> {TranslateString(999, 'Staked only')}</Text>
       </ToggleWrapper>
-      <ButtonMenu activeIndex={isExact ? 0 : 1} size="sm" variant="subtle">
+      <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
         <ButtonMenuItem as={Link} to={`${url}`}>
-          {TranslateString(698, 'Active')}
+          {TranslateString(1198, 'Live')}
         </ButtonMenuItem>
         <ButtonMenuItem as={Link} to={`${url}/history`}>
-          {TranslateString(700, 'Inactive')}
+          {TranslateString(388, 'Finished')}
         </ButtonMenuItem>
       </ButtonMenu>
     </Wrapper>

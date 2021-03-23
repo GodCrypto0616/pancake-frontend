@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWeb3React } from '@web3-react/core'
 import { Button, Flex, Text, InjectedModalProps } from '@pancakeswap-libs/uikit'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
@@ -19,7 +19,7 @@ interface StartPageProps extends InjectedModalProps {
   goToApprove: UseEditProfileResponse['goToApprove']
 }
 
-const DangerOutline = styled(Button).attrs({ variant: 'secondary', fullWidth: true })`
+const DangerOutline = styled(Button).attrs({ variant: 'secondary' })`
   border-color: ${({ theme }) => theme.colors.failure};
   color: ${({ theme }) => theme.colors.failure};
   margin-bottom: 24px;
@@ -30,13 +30,23 @@ const DangerOutline = styled(Button).attrs({ variant: 'secondary', fullWidth: tr
   }
 `
 
+const AvatarWrapper = styled.div`
+  height: 64px;
+  width: 64px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 128px;
+    width: 128px;
+  }
+`
+
 const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemove, onDismiss }) => {
   const [needsApproval, setNeedsApproval] = useState(null)
   const { profile } = useProfile()
   const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts()
   const hasMinimumCakeRequired = useHasCakeBalance(profile.isActive ? numberCakeToUpdate : numberCakeToReactivate)
   const TranslateString = useI18n()
-  const { account } = useWallet()
+  const { account } = useWeb3React()
   const cakeContract = useCake()
   const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
@@ -62,7 +72,9 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
 
   return (
     <Flex alignItems="center" justifyContent="center" flexDirection="column">
-      <ProfileAvatar profile={profile} />
+      <AvatarWrapper>
+        <ProfileAvatar profile={profile} />
+      </AvatarWrapper>
       <Flex alignItems="center" style={{ height: '48px' }} justifyContent="center">
         <Text as="p" color="failure">
           {!hasMinimumCakeRequired &&
@@ -72,18 +84,20 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
       {profile.isActive ? (
         <>
           <Button
-            fullWidth
+            width="100%"
             mb="8px"
             onClick={needsApproval === true ? goToApprove : goToChange}
             disabled={!hasMinimumCakeRequired || needsApproval === null}
           >
             {TranslateString(999, 'Change Profile Pic')}
           </Button>
-          <DangerOutline onClick={goToRemove}>{TranslateString(999, 'Remove Profile Pic')}</DangerOutline>
+          <DangerOutline width="100%" onClick={goToRemove}>
+            {TranslateString(999, 'Remove Profile Pic')}
+          </DangerOutline>
         </>
       ) : (
         <Button
-          fullWidth
+          width="100%"
           mb="8px"
           onClick={needsApproval === true ? goToApprove : goToChange}
           disabled={!hasMinimumCakeRequired || needsApproval === null}
@@ -91,7 +105,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
           {TranslateString(999, 'Reactivate Profile')}
         </Button>
       )}
-      <Button variant="text" fullWidth onClick={onDismiss}>
+      <Button variant="text" width="100%" onClick={onDismiss}>
         {TranslateString(999, 'Close Window')}
       </Button>
     </Flex>
